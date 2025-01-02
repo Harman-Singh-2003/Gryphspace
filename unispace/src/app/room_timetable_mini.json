@@ -1,0 +1,74 @@
+{
+    "ROZH": {
+        "104": {
+            "M": [],
+            "T": [],
+            "W": [
+                {
+                    "StartTime": "06:50 PM",
+                    "EndTime": "09:50 PM"
+                }
+            ],
+            "Th": [
+                {
+                    "StartTime": "08:50 PM",
+                    "EndTime": "09:50 PM"
+                }
+            ],
+            "F": [
+                {
+                    "StartTime": "04:20 PM",
+                    "EndTime": "09:50 PM"
+                }
+            ]
+        },
+        "101": {
+            "M": [
+                {
+                    "StartTime": "08:50 PM",
+                    "EndTime": "09:50 PM"
+                }
+            ],
+            "T": [
+                {
+                    "StartTime": "08:50 PM",
+                    "EndTime": "09:50 PM"
+                }
+            ],
+            "W": [
+                {
+                    "StartTime": "05:20 PM",
+                    "EndTime": "07:00 PM"
+                }
+            ],
+            "Th": [
+                {
+                    "StartTime": "06:50 PM",
+                    "EndTime": "07:30 PM"
+                },
+                {
+                    "StartTime": "09:20 PM",
+                    "EndTime": "09:50 PM"
+                },
+                {
+                    "StartTime": "01:50 PM",
+                    "EndTime": "03:50 PM"
+                }
+            ],
+            "F": [
+                {
+                    "StartTime": "10:20 AM",
+                    "EndTime": "11:30 AM"
+                },
+                {
+                    "StartTime": "02:20 PM",
+                    "EndTime": "03:30 PM"
+                },
+                {
+                    "StartTime": "05:20 PM",
+                    "EndTime": "09:50 PM"
+                }
+            ]
+        }
+    }
+}
