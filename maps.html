@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Campus Map with Abbreviations</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+
+      /* Style for the custom labels */
+      .map-label {
+        position: absolute;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 4px 8px;
+        border-radius: 3px;
+        pointer-events: none; /* Makes sure the label doesn't interfere with clicks */
+        z-index: 9999;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" style="height: 100%; width: 100%;"></div>
+
+    <script>
+      let map;
+      let infoWindow;
+
+      async function initMap() {
+        const { InfoWindow } = await google.maps.importLibrary("maps");
+
+        // Coordinates for the University of Guelph (latitude, longitude)
+        const universityCoords = { lat: 43.531521, lng: -80.227671 };
+
+        // Initialize the map centered at the University of Guelph
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: universityCoords,
+          zoom: 17
+        });
+
+        infoWindow = new InfoWindow({ pixelOffset: { height: -37 } });
+
+        // Load GeoJSON data via JSONP
+        const script = document.createElement("script");
+        script.src = "map.geo.json";  // Make sure to use the correct path to your GeoJSON file
+        document.head.appendChild(script);
+
+        // Custom OverlayView to handle label positioning
+        class LabelOverlay extends google.maps.OverlayView {
+          constructor(position, map, label) {
+            super();
+            this.position = position;
+            this.map = map;
+            this.label = label;
+            this.div = null;
+            this.setMap(map);
+          }
+
+          // Creates the DOM element for the label
+          onAdd() {
+            const div = document.createElement('div');
+            div.className = 'map-label';
+            div.innerText = this.label;
+            this.div = div;
+
+            const panes = this.getPanes();
+            panes.overlayLayer.appendChild(div);
+          }
+
+          // Position the label at the correct location on the map
+          draw() {
+            const projection = this.getProjection();
+            const point = projection.fromLatLngToDivPixel(this.position);
+
+            const div = this.div;
+            div.style.left = `${point.x - div.offsetWidth / 2}px`;
+            div.style.top = `${point.y - div.offsetHeight / 2}px`;
+          }
+
+          // Remove the label when it's no longer needed
+          onRemove() {
+            if (this.div) {
+              this.div.parentNode.removeChild(this.div);
+              this.div = null;
+            }
+          }
+        }
+
+        // Adds a custom label to the map using the LabelOverlay class
+        function addLabel(position, label) {
+          new LabelOverlay(position, map, label);
+        }
+
+        // Function to show information about the feature when clicked
+        function showBuildingInfo(position, feature) {
+          const altName = feature.getProperty('alt_name') || 'No abbreviation available';  // Get building abbreviation from alt_name property
+          const content = `
+            <div style="padding: 8px">
+              <h2 style="margin-top: 0">${altName}</h2>
+              <p>Click on a building feature to see more details!</p>
+            </div>
+          `;
+
+          infoWindow.setOptions({ content, position });
+          infoWindow.open(map);
+        }
+
+        // Callback function to handle the GeoJSON data
+        window.eqfeed_callback = (data) => {
+          map.data.addGeoJson(data);
+          map.data.setStyle((feature) => ({
+            fillColor: '#d6c344',  // Set the fill color to red
+            fillOpacity: 1,        // Set fill opacity (optional)
+            strokeColor: '#000000', // Set stroke color (optional)
+            strokeWeight: 3         // Set stroke width (optional)
+          }));
+
+          // Add a click event listener to show building info when clicked
+          map.data.addListener('click', (e) => showBuildingInfo(e.latLng, e.feature));
+
+          // Add labels for buildings only for polygons and multipolygons
+          map.data.forEach((feature) => {
+            const geometry = feature.getGeometry();
+            let altName = feature.getProperty('alt_name');  // Get the abbreviation from alt_name
+            if (!altName) {
+              return; // Skip adding label if alt_name is not available
+            }
+
+            if (geometry) {
+              if (geometry.getType() === 'Polygon') {
+                const centroid = getCentroidFromPolygon(geometry.getAt(0).getArray());  // Pass the first polygon
+                addLabel(centroid, altName);  // Add label for building abbreviation
+              } else if (geometry.getType() === 'MultiPolygon') {
+                const centroid = getCentroidFromMultiPolygon(geometry.getArray());  // Process multipolygon
+                addLabel(centroid, altName);  // Add label for building abbreviation
+              }
+            }
+          });
+        };
+
+        // Function to calculate the centroid by averaging all coordinates
+        function getCentroidFromPolygon(polygon) {
+          let lat = 0, lng = 0, totalPoints = 0;
+
+          polygon.forEach((coord) => {
+            lng += coord.lng();
+            lat += coord.lat();
+            totalPoints++;
+          });
+
+          if (totalPoints === 0) {
+            console.error("No valid coordinates found in the polygon.");
+            return null;
+          }
+
+          const centroidLat = lat / totalPoints;
+          const centroidLng = lng / totalPoints;
+          return new google.maps.LatLng(centroidLat, centroidLng);
+        }
+
+        // Function to calculate the centroid for a multipolygon
+        function getCentroidFromMultiPolygon(multiPolygon) {
+          let lat = 0, lng = 0, totalPoints = 0;
+
+          multiPolygon.forEach((polygon) => {
+            polygon.getArray().forEach((coord) => {
+              lng += coord.lng();
+              lat += coord.lat();
+              totalPoints++;
+            });
+          });
+
+          if (totalPoints === 0) {
+            console.error("No valid coordinates found in the multipolygon.");
+            return null;
+          }
+
+          const centroidLat = lat / totalPoints;
+          const centroidLng = lng / totalPoints;
+          return new google.maps.LatLng(centroidLat, centroidLng);
+        }
+      }
+    </script>
+
+    <!-- Load Google Maps API script with your API key -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABXR0HRaZS9aUzQgYj9dTVbJOHPPuaQV8&callback=initMap&libraries=maps" async defer></script>
+  </body>
+</html>
