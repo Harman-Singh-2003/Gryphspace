@@ -1,5 +1,6 @@
 "use client";
-import React from 'react';
+import React from "react";
+import { useState } from "react";
 import { RoomSchedule } from "@/app/utils/room_timetable";
 import { RoomAvailabilitySchema } from "@/app/utils/availabilitySchema";
 import { RoomRow } from "@/app/components/RoomRow";
@@ -19,16 +20,29 @@ export const BuildingRow: React.FC<BuildingRowProps> = ({
   roomAvailabilities,
   day,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className="bg-red-400 flex flex-col px-4 justify-between">
-      <div className="flex flex-row">
-        <div className="bg-green-300">IMAGE</div>
-        <div className="flex flex-col bg-orange-500">
-          <div>{name}</div>
-          <div>{availablility ? "Available" : "Not Available"}</div>
+    <div className="flex flex-col bg-indigo-800 p-4">
+      <button
+        className="bg-red-400 flex flex-row px-4 justify-between"
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}
+      >
+        <div className="flex flex-row">
+          <div className="bg-green-300">IMAGE</div>
+          <div className="flex flex-col bg-orange-500">
+            <div>{name}</div>
+            <div>{availablility ? "Available" : "Not Available"}</div>
+          </div>
         </div>
-      </div>
-      <div className="bg-purple-400">
+        <div className="bg-purple-400">
+          Nothing
+          <div className="bg-yellow-300">View Rooms</div>
+        </div>
+      </button>
+      {isOpen && <div className="bg-purple-400">
         {Object.keys(roomSchedule).map((room) => (
           <RoomRow
             key={room}
@@ -38,7 +52,7 @@ export const BuildingRow: React.FC<BuildingRowProps> = ({
             day={day}
           />
         ))}
-      </div>
+      </div>}
     </div>
   );
 };
