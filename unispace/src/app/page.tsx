@@ -63,20 +63,21 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
-      <h1>Unispace</h1>
-      <p>Find the perfect study space for you</p>
-      <div>
+    <div className="mx-auto min-h-screen max-w-screen-2xl p-4 lg:p-8 bg-slate-300 text-black">
+      <h1>GryphSpace</h1>
+      <div className="flex flex-col justify-items-start bg-orange-800">
         {Object.keys(roomTimetable).map((building: string) => {
           return (
-            <BuildingRow
-              key={building}
-              name={building}
-              availablility={true}
-              day={day}
-              roomSchedule={roomTimetable[building]}
-              roomAvailabilities={roomAvailability[building]}
-            />
+            <div key={building} className="bg-slate-700 py-4 flex-col min-w-96">
+              <BuildingRow
+                key={building}
+                name={building}
+                availablility={true}
+                day={day}
+                roomSchedule={roomTimetable[building]}
+                roomAvailabilities={roomAvailability[building]}
+              />
+            </div>
           );
         })}
       </div>
