@@ -23,6 +23,11 @@ function isTimeInRange(startTime: string, endTime: string, checkTime: string): b
 }
 
 function isRoomFree(buildingSchedule: BuildingSchedule, buildingCode: string, roomNumber: string, day: string, time: string): boolean {
+    
+    if (day === 'Wknd') {
+        return true; // Assume all rooms are available on weekends
+    }
+    
     const building = buildingSchedule[buildingCode];
     if (!building) {
         throw new Error(`Building code ${buildingCode} not found`);
