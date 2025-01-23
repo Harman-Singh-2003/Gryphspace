@@ -1,8 +1,10 @@
-'use client'
-import { useEffect, useState } from "react";
+"use client";
+import { useState } from "react";
 import isRoomFree from "@/app/utils/checkAvailability";
 import roomTimetableData from "@/app/room_timetable.json";
 import BuildingSchedule from "@/app/utils/room_timetable";
+import { availabilitySchema } from "@/app/utils/availabilitySchema";
+import { BuildingRow } from "@/app/components/BuildingRow";
 
 const roomTimetable = roomTimetableData as BuildingSchedule;
 
@@ -14,48 +16,66 @@ const getDayKey = (shortDay: string): string => {
     Thu: "Th",
     Fri: "F",
   };
-  return dayMap[shortDay] || "";
+  return dayMap[shortDay] || "Wknd";
+};
+
+const calculateRoomAvailability = (roomTimetable: BuildingSchedule, day: string, time: string): availabilitySchema => {
+  const availability: availabilitySchema = {};
+
+  Object.keys(roomTimetable).forEach((buildingCode) => {
+    availability[buildingCode] = {};
+    Object.keys(roomTimetable[buildingCode]).forEach((roomNumber) => {
+      availability[buildingCode][roomNumber] = isRoomFree(
+        roomTimetable,
+        buildingCode,
+        roomNumber,
+        day,
+        time
+      );
+    });
+  });
+
+  return availability;
 };
 
 export default function Home() {
-  const [roomAvailability, setRoomAvailability] = useState<{ [building: string]: { [room: string]: boolean } }>({});
+  let shortDay = new Date().toLocaleString("en-US", { weekday: "short" }); // Get current day in short format (e.g., "Mon", "Tue")
+  let day = getDayKey(shortDay); // Map to M, T, W, Th, F
+  let time = new Date().toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  }); // Get current time in "hh:mm AM/PM" format
 
-  useEffect(() => {
-    const checkAvailability = () => {
-      const availability: { [building: string]: { [room: string]: boolean } } = {};
-      const shortDay = new Date().toLocaleString('en-US', { weekday: 'short' }); // Get current day in short format (e.g., "Mon", "Tue")
-      const day = getDayKey(shortDay); // Map to M, T, W, Th, F
-      const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }); // Get current time in "hh:mm AM/PM" format
-      for (const buildingCode in roomTimetable) {
-        availability[buildingCode] = {};
-        for (const roomNumber in roomTimetable[buildingCode]) {
-          availability[buildingCode][roomNumber] = isRoomFree(roomTimetable, buildingCode, roomNumber, day, time);
-        }
-      }
-
-      setRoomAvailability(availability);
-    };
-
-    checkAvailability();
-  }, []);
+  const roomAvailability = calculateRoomAvailability(roomTimetable, day, time);
 
   return (
-    <div>
-      <h1>Unispace</h1>
-      <p>Find the perfect study space for you</p>
-      <div>
-        {Object.keys(roomAvailability).map((building) => (
-          <div key={building}>
-            <h2>{building}</h2>
-            <ul>
-              {Object.keys(roomAvailability[building]).map((room) => (
-                <li key={room}>
-                  {room} - {roomAvailability[building][room] ? "Available" : "Not Available"}
-                </li>
-              ))}
-            </ul>
+    <div className="mx-auto min-h-screen max-w-screen-2xl p-4 lg:p-8 bg-gray-950 text-slate-50 flex flex-col items-center">
+      <h1 className="font-bold text-4xl p-4">GryphSpace</h1>
+      <div className="flex flex-col bg-gray-950 items-center w-full md:max-w-screen-lg ">
+        <div className="flex flex-row justify-center w-full md:max-w-screen-lg">
+          <div className="flex flex-col  items-center p-2 bg-gray-900 rounded-lg">
+            {Object.keys(roomTimetable).map((building: string, index: number) => {
+              const buildingAvailability = roomAvailability[building] || {};
+              return (
+                <div
+                  className={`flex bg-gray-950 flex-col min-w-96 md:w-1/2 max-w-lg ${index !== 0 ? 'border-t border-gray-500' : ''}`}
+                  key={building}
+                >
+                  <BuildingRow
+                    name={building}
+                    availability={Object.values(buildingAvailability).some(
+                      (isAvailable) => isAvailable
+                    )}
+                    day={day}
+                    roomSchedule={roomTimetable[building]}
+                    roomAvailabilities={buildingAvailability}
+                  />
+                </div>
+              );
+            })}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );

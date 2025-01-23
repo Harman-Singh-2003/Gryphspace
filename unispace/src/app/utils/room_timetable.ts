@@ -1,9 +1,9 @@
-interface TimeSlot {
+export interface TimeSlot {
     StartTime: string;
     EndTime: string;
 }
 
-interface DaySchedule {
+export interface DaySchedule {
     M: TimeSlot[];
     T: TimeSlot[];
     W: TimeSlot[];
@@ -12,11 +12,11 @@ interface DaySchedule {
     [key: string]: TimeSlot[] | undefined;
 }
 
-interface RoomSchedule {
+export interface RoomSchedule {
     [roomNumber: string]: DaySchedule;
 }
 
-interface BuildingSchedule {
+export interface BuildingSchedule {
     [buildingCode: string]: RoomSchedule;
 }
 
