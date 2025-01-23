@@ -50,25 +50,32 @@ export default function Home() {
   const roomAvailability = calculateRoomAvailability(roomTimetable, day, time);
 
   return (
-    <div className="mx-auto min-h-screen max-w-screen-2xl p-4 lg:p-8 bg-slate-300 text-black flex flex-col items-center">
+    <div className="mx-auto min-h-screen max-w-screen-2xl p-4 lg:p-8 bg-gray-950 text-slate-50 flex flex-col items-center">
       <h1 className="font-bold text-4xl p-4">GryphSpace</h1>
-      <div className="flex flex-col bg-orange-800 items-center w-full md:max-w-screen-lg ">
-          {Object.keys(roomTimetable).map((building: string) => {
-          const buildingAvailability = roomAvailability[building] || {};
-          return (
-            <div className="flex bg-slate-700 my-4 flex-col min-w-96 md:w-1/2 max-w-lg" key={building}>
-              <BuildingRow
-                name={building}
-                availability={Object.values(buildingAvailability).some(
-                  (isAvailable) => isAvailable
-                )}
-                day={day}
-                roomSchedule={roomTimetable[building]}
-                roomAvailabilities={buildingAvailability}
-              />
-            </div>
-          );
-        })}
+      <div className="flex flex-col bg-gray-950 items-center w-full md:max-w-screen-lg ">
+        <div className="flex flex-row justify-center w-full md:max-w-screen-lg">
+          <div className="flex flex-col  items-center p-2 bg-gray-900 rounded-lg">
+            {Object.keys(roomTimetable).map((building: string, index: number) => {
+              const buildingAvailability = roomAvailability[building] || {};
+              return (
+                <div
+                  className={`flex bg-gray-950 flex-col min-w-96 md:w-1/2 max-w-lg ${index !== 0 ? 'border-t border-gray-500' : ''}`}
+                  key={building}
+                >
+                  <BuildingRow
+                    name={building}
+                    availability={Object.values(buildingAvailability).some(
+                      (isAvailable) => isAvailable
+                    )}
+                    day={day}
+                    roomSchedule={roomTimetable[building]}
+                    roomAvailabilities={buildingAvailability}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

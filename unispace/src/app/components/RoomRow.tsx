@@ -10,7 +10,7 @@ interface RoomRowProps {
 
 export const RoomRow: React.FC<RoomRowProps> = ({ name, availability, timeSlots }) => {
     return (
-        <div className="flex flex-col bg-gray-200 p-4 mb-2 rounded justify-center">
+        <div className="flex flex-col bg-gray-800 p-4 mb-2 rounded justify-center">
             <div className="flex justify-start items-center">
                 <div className="font-bold pr-2">{name}</div>
                 <div>

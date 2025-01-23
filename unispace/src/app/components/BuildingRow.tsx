@@ -23,16 +23,16 @@ export const BuildingRow: React.FC<BuildingRowProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="flex flex-col bg-indigo-800 p-4">
+    <div className="flex flex-col bg-gray-900 p-2">
       <button
-        className="bg-red-400 flex flex-row justify-between items-center"
+        className="bg-gray-900 flex flex-row justify-between items-center"
         onClick={() => {
           setIsOpen(!isOpen);
         }}
       >
-        <div className="flex flex-row bg-cyan-300">
+        <div className="flex flex-row bg-gray-900">
           {/* <div className="bg-green-300">IMAGE</div> */}
-          <div className="flex flex-row bg-orange-500 items-center">
+          <div className="flex flex-row bg-gray-900 items-center">
             <div className="font-semibold text-xl m-2">{name}</div>
             <div>
               {availability ? (
@@ -43,12 +43,23 @@ export const BuildingRow: React.FC<BuildingRowProps> = ({
             </div>
           </div>
         </div>
-        <div className="bg-purple-400">
-          Nothing
-          <div className="bg-yellow-300">View Rooms</div>
+        <div>
+          <div className="bg-gray-900 flex items-center justify-between">
+
+            {isOpen ? (
+              <svg className="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path>
+              </svg>
+            ) : (
+              <svg className="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            )}
+            <span className="mx-2 text-slate-300">View Rooms</span>
+          </div>
         </div>
       </button>
-      {isOpen && <div className="bg-purple-400">
+      {isOpen && <div>
         {Object.keys(roomSchedule).map((room) => (
           <RoomRow
             key={room}
