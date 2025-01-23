@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import isRoomFree from "@/app/utils/checkAvailability";
 import roomTimetableData from "@/app/room_timetable.json";
 import BuildingSchedule from "@/app/utils/room_timetable";
@@ -39,9 +38,9 @@ const calculateRoomAvailability = (roomTimetable: BuildingSchedule, day: string,
 };
 
 export default function Home() {
-  let shortDay = new Date().toLocaleString("en-US", { weekday: "short" }); // Get current day in short format (e.g., "Mon", "Tue")
-  let day = getDayKey(shortDay); // Map to M, T, W, Th, F
-  let time = new Date().toLocaleTimeString("en-US", {
+  const shortDay = new Date().toLocaleString("en-US", { weekday: "short" }); // Get current day in short format (e.g., "Mon", "Tue")
+  const day = getDayKey(shortDay); // Map to M, T, W, Th, F
+  const time = new Date().toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
