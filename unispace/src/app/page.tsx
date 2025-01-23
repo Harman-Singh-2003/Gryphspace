@@ -50,16 +50,16 @@ export default function Home() {
   const roomAvailability = calculateRoomAvailability(roomTimetable, day, time);
 
   return (
-    <div className="mx-auto min-h-screen max-w-screen-2xl p-4 lg:p-8 bg-slate-300 text-black">
-      <h1>GryphSpace</h1>
-      <div className="flex flex-col justify-items-start bg-orange-800">
-        {Object.keys(roomTimetable).map((building: string) => {
+    <div className="mx-auto min-h-screen max-w-screen-2xl p-4 lg:p-8 bg-slate-300 text-black flex flex-col items-center">
+      <h1 className="font-bold text-4xl p-4">GryphSpace</h1>
+      <div className="flex flex-col bg-orange-800 items-center w-full md:max-w-screen-lg ">
+          {Object.keys(roomTimetable).map((building: string) => {
           const buildingAvailability = roomAvailability[building] || {};
           return (
-            <div className="bg-slate-700 py-4 flex-col min-w-96" key={building}>
+            <div className="flex bg-slate-700 my-4 flex-col min-w-96 md:w-1/2 max-w-lg" key={building}>
               <BuildingRow
                 name={building}
-                availablility={Object.values(buildingAvailability).some(
+                availability={Object.values(buildingAvailability).some(
                   (isAvailable) => isAvailable
                 )}
                 day={day}

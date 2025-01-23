@@ -7,7 +7,7 @@ import { RoomRow } from "@/app/components/RoomRow";
 
 interface BuildingRowProps {
   name: string;
-  availablility: boolean;
+  availability: boolean;
   roomSchedule: RoomSchedule;
   roomAvailabilities: RoomAvailabilitySchema;
   day: string;
@@ -15,7 +15,7 @@ interface BuildingRowProps {
 
 export const BuildingRow: React.FC<BuildingRowProps> = ({
   name,
-  availablility,
+  availability,
   roomSchedule,
   roomAvailabilities,
   day,
@@ -25,16 +25,22 @@ export const BuildingRow: React.FC<BuildingRowProps> = ({
   return (
     <div className="flex flex-col bg-indigo-800 p-4">
       <button
-        className="bg-red-400 flex flex-row px-4 justify-between"
+        className="bg-red-400 flex flex-row justify-between items-center"
         onClick={() => {
           setIsOpen(!isOpen);
         }}
       >
-        <div className="flex flex-row">
-          <div className="bg-green-300">IMAGE</div>
-          <div className="flex flex-col bg-orange-500">
-            <div>{name}</div>
-            <div>{availablility ? "Available" : "Not Available"}</div>
+        <div className="flex flex-row bg-cyan-300">
+          {/* <div className="bg-green-300">IMAGE</div> */}
+          <div className="flex flex-row bg-orange-500 items-center">
+            <div className="font-semibold text-xl m-2">{name}</div>
+            <div>
+              {availability ? (
+                <span className="text-green-500">&#9679;</span>
+              ) : (
+                <span className="text-red-500">&#9679;</span>
+              )}
+            </div>
           </div>
         </div>
         <div className="bg-purple-400">
