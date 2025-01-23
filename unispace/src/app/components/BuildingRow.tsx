@@ -21,7 +21,8 @@ export const BuildingRow: React.FC<BuildingRowProps> = ({
   day,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  console.log(name);
+  console.log(availability);
   return (
     <div className="flex flex-col bg-gray-900 p-2">
       <button
