@@ -49,7 +49,7 @@ export default function Home() {
   const roomAvailability = calculateRoomAvailability(roomTimetable, day, time);
 
   return (
-    <div className="mx-auto min-h-screen max-w-screen-2xl p-4 lg:p-8 bg-gray-950 text-slate-50 flex flex-col items-center">
+    <div className="mx-auto min-h-screen p-4 lg:p-8 bg-gray-950 text-slate-50 flex flex-col items-center">
       <h1 className="font-bold text-4xl p-4">GryphSpace</h1>
       <div className="flex flex-col bg-gray-950 items-center w-full md:max-w-screen-lg ">
         <div className="flex flex-row justify-center w-full md:max-w-screen-lg">

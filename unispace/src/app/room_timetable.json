@@ -7172,38 +7172,6 @@
             ]
         }
     },
-    "AD-S": {
-        "VIRTUAL": {
-            "M": [
-                {
-                    "StartTime": "05:20 PM",
-                    "EndTime": "07:00 PM"
-                }
-            ],
-            "T": [],
-            "W": [
-                {
-                    "StartTime": "05:20 PM",
-                    "EndTime": "06:00 PM"
-                },
-                {
-                    "StartTime": "08:50 PM",
-                    "EndTime": "09:50 PM"
-                }
-            ],
-            "Th": [],
-            "F": [
-                {
-                    "StartTime": "02:20 PM",
-                    "EndTime": "04:30 PM"
-                },
-                {
-                    "StartTime": "05:20 PM",
-                    "EndTime": "09:50 PM"
-                }
-            ]
-        }
-    },
     "GRHM": {
         "2310": {
             "M": [
@@ -10115,15 +10083,6 @@
                     "EndTime": "09:50 PM"
                 }
             ],
-            "F": []
-        }
-    },
-    "AD-A": {
-        "REMOTE": {
-            "M": [],
-            "T": [],
-            "W": [],
-            "Th": [],
             "F": []
         }
     },
