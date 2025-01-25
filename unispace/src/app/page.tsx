@@ -44,7 +44,8 @@ export default function Home() {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
-  }); // Get current time in "hh:mm AM/PM" format
+  }); 
+  // Get current time in "hh:mm AM/PM" format
 
   const roomAvailability = calculateRoomAvailability(roomTimetable, day, time);
 
