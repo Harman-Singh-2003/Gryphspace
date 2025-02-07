@@ -21,13 +21,13 @@ export const RoomRow: React.FC<RoomRowProps> = ({ name, availability, timeSlots 
                     )}
                 </div>
             </div>
-            <div className="mt-2">
+            {timeSlots && timeSlots.length > 0 && <div className="mt-2">
                 {timeSlots?.map((slot, index) => (
                     <div key={index}>
                         {slot.StartTime} - {slot.EndTime}
                     </div>
                 ))}
-            </div>
+            </div>}
         </div>
     );
 };
