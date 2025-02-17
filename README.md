@@ -15,9 +15,9 @@ GryphSpace aggregates classroom schedule data from the University of Guelph's pu
 
 ## Technologies Used
 
-* **Frontend:** Next.js, React.js [cite: 16]
-* **Backend:** Python [cite: 16]
-* **Hosting:** Cloudflare [cite: 16]
+* **Frontend:** Next.js, React.js, Typescript
+* **Backend:** Python
+* **Hosting:** Cloudflare
 
 ## Motivation
 
