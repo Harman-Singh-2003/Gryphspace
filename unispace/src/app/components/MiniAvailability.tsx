@@ -26,7 +26,7 @@ export function MiniAvailability({ weeklyData, todaySparkline }: MiniAvailabilit
   
   // Memoize heatmap rendering
   const heatmapCells = useMemo(() => {
-    const cells: JSX.Element[] = [];
+    const cells: React.ReactElement[] = [];
     DAYS.forEach((day, dayIndex) => {
       const dayData = weeklyData[day] || [];
       dayData.forEach((percentage, hourIndex) => {
