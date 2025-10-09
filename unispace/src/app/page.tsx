@@ -3,7 +3,6 @@
 // Mobile: filters in drawer
 import roomTimetableData from "@/app/room_timetable.json";
 import BuildingSchedule from "@/app/utils/room_timetable";
-import { availabilitySchema } from "@/app/utils/availabilitySchema";
 import { BuildingRow } from "@/app/components/BuildingRow";
 import { RightRail } from "@/app/components/RightRail";
 import { MobileFiltersDrawer } from "@/app/components/MobileFiltersDrawer";

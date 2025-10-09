@@ -1,7 +1,7 @@
 // Enhanced availability calculator that supports custom date/time queries and filters
 // Memoizes results for performance
 import BuildingSchedule, { TimeSlot } from './room_timetable';
-import { AvailabilityQuery, TimeFilter } from '../hooks/useAvailabilityState';
+import { AvailabilityQuery } from '../hooks/useAvailabilityState';
 import { availabilitySchema } from './availabilitySchema';
 
 // Convert 24-hour HH:MM to 12-hour format for comparison
