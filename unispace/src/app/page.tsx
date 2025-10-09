@@ -1,7 +1,6 @@
 "use client";
 // Main page with 2-column layout: room list + right rail (desktop)
 // Mobile: filters in drawer
-import isRoomFree from "@/app/utils/checkAvailability";
 import roomTimetableData from "@/app/room_timetable.json";
 import BuildingSchedule from "@/app/utils/room_timetable";
 import { availabilitySchema } from "@/app/utils/availabilitySchema";
@@ -18,47 +17,12 @@ import { useEffect, useState, useMemo } from "react";
 
 const roomTimetable = roomTimetableData as BuildingSchedule;
 
-// Helper to get day key from shortDay string (Mon, Tue, etc.)
-const getDayKey = (shortDay: string): string => {
-  const dayMap: { [key: string]: string } = {
-    Mon: "M",
-    Tue: "T",
-    Wed: "W",
-    Thu: "Th",
-    Fri: "F",
-  };
-  return dayMap[shortDay] || "Wknd";
-};
-
 // Helper to get day key from a Date object
 const getDayKeyFromDate = (date: Date): string => {
   const dayIndex = date.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
   if (dayIndex === 0 || dayIndex === 6) return 'Wknd';
   const dayKeys = ['', 'M', 'T', 'W', 'Th', 'F'];
   return dayKeys[dayIndex];
-};
-
-const calculateRoomAvailability = (
-  roomTimetable: BuildingSchedule,
-  day: string,
-  time: string
-): availabilitySchema => {
-  const availability: availabilitySchema = {};
-
-  Object.keys(roomTimetable).forEach((buildingCode) => {
-    availability[buildingCode] = {};
-    Object.keys(roomTimetable[buildingCode]).forEach((roomNumber) => {
-      availability[buildingCode][roomNumber] = isRoomFree(
-        roomTimetable,
-        buildingCode,
-        roomNumber,
-        day,
-        time
-      );
-    });
-  });
-
-  return availability;
 };
 
 export default function Home() {

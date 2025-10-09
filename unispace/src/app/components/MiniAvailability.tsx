@@ -17,19 +17,21 @@ function getHeatmapColor(percentage: number): string {
   return 'rgb(168, 85, 247)'; // purple-500
 }
 
+// Constants outside component to avoid recreation
+const DAYS = ['M', 'T', 'W', 'Th', 'F'] as const;
+const CELL_SIZE = 16;
+const GAP = 2;
+
 export function MiniAvailability({ weeklyData, todaySparkline }: MiniAvailabilityProps) {
-  const days = ['M', 'T', 'W', 'Th', 'F'];
-  const cellSize = 16;
-  const gap = 2;
   
   // Memoize heatmap rendering
   const heatmapCells = useMemo(() => {
     const cells: JSX.Element[] = [];
-    days.forEach((day, dayIndex) => {
+    DAYS.forEach((day, dayIndex) => {
       const dayData = weeklyData[day] || [];
       dayData.forEach((percentage, hourIndex) => {
-        const x = dayIndex * (cellSize + gap);
-        const y = hourIndex * (cellSize + gap);
+        const x = dayIndex * (CELL_SIZE + GAP);
+        const y = hourIndex * (CELL_SIZE + GAP);
         const color = getHeatmapColor(percentage);
         
         cells.push(
@@ -37,8 +39,8 @@ export function MiniAvailability({ weeklyData, todaySparkline }: MiniAvailabilit
             key={`${day}-${hourIndex}`}
             x={x}
             y={y}
-            width={cellSize}
-            height={cellSize}
+            width={CELL_SIZE}
+            height={CELL_SIZE}
             fill={color}
             className="transition-opacity hover:opacity-80"
           >
@@ -48,7 +50,7 @@ export function MiniAvailability({ weeklyData, todaySparkline }: MiniAvailabilit
       });
     });
     return cells;
-  }, [weeklyData, days]);
+  }, [weeklyData]);
 
   // Memoize sparkline path
   const sparklinePath = useMemo(() => {
@@ -65,8 +67,8 @@ export function MiniAvailability({ weeklyData, todaySparkline }: MiniAvailabilit
     return `M ${points}`;
   }, [todaySparkline]);
 
-  const heatmapWidth = days.length * (cellSize + gap) - gap;
-  const heatmapHeight = 14 * (cellSize + gap) - gap; // 14 hours (8-21)
+  const heatmapWidth = DAYS.length * (CELL_SIZE + GAP) - GAP;
+  const heatmapHeight = 14 * (CELL_SIZE + GAP) - GAP; // 14 hours (8-21)
 
   return (
     <div className="space-y-6">
@@ -78,8 +80,8 @@ export function MiniAvailability({ weeklyData, todaySparkline }: MiniAvailabilit
             {/* Day labels */}
             <div className="flex flex-col gap-0.5 text-xs text-slate-400">
               <div className="h-4"></div>
-              {days.map((day) => (
-                <div key={day} style={{ height: cellSize, lineHeight: `${cellSize}px` }}>
+              {DAYS.map((day) => (
+                <div key={day} style={{ height: CELL_SIZE, lineHeight: `${CELL_SIZE}px` }}>
                   {day}
                 </div>
               ))}
@@ -103,7 +105,7 @@ export function MiniAvailability({ weeklyData, todaySparkline }: MiniAvailabilit
                       return (
                         <text
                           key={hour}
-                          x={i * (cellSize + gap) + cellSize / 2}
+                          x={i * (CELL_SIZE + GAP) + CELL_SIZE / 2}
                           y={heatmapHeight + 15}
                           fontSize="10"
                           fill="rgb(148, 163, 184)"

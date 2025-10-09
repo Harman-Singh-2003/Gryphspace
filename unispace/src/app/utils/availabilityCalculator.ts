@@ -53,55 +53,6 @@ function getDayKeyFromDate(date: Date): string {
   return dayKeys[dayIndex];
 }
 
-// Check if query matches time-based filters
-function matchesTimeFilters(
-  query: AvailabilityQuery,
-  filters: Set<TimeFilter>,
-  now: Date
-): boolean {
-  if (filters.size === 0) return true;
-  
-  // All filters must match (AND logic)
-  for (const filter of filters) {
-    switch (filter) {
-      case 'open-now': {
-        const nowStr = now.toISOString().split('T')[0];
-        const nowTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-        if (query.date !== nowStr || query.startTime !== nowTime) return false;
-        break;
-      }
-      case 'free-30':
-        if (query.duration < 30) return false;
-        break;
-      case 'free-60':
-        if (query.duration < 60) return false;
-        break;
-      case 'morning': {
-        const [hours] = query.startTime.split(':').map(Number);
-        if (hours < 8 || hours >= 12) return false;
-        break;
-      }
-      case 'afternoon': {
-        const [hours] = query.startTime.split(':').map(Number);
-        if (hours < 12 || hours >= 17) return false;
-        break;
-      }
-      case 'evening': {
-        const [hours] = query.startTime.split(':').map(Number);
-        if (hours < 18) return false;
-        break;
-      }
-      case 'today': {
-        const todayStr = now.toISOString().split('T')[0];
-        if (query.date !== todayStr) return false;
-        break;
-      }
-    }
-  }
-  
-  return true;
-}
-
 // Calculate room availability for a given query
 export function calculateAvailability(
   timetable: BuildingSchedule,
