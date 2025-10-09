@@ -19,3 +19,45 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Accessibility: Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom scrollbar for webkit browsers - improved design */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(75, 85, 99) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgb(75, 85, 99);
+  border-radius: 10px;
+  border: 2px solid rgb(17, 24, 39);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgb(107, 114, 128);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:active {
+  background: rgb(156, 163, 175);
+}
+
