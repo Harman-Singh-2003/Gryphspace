@@ -113,7 +113,9 @@ export function calculateAvailabilityCached(
   // Limit cache size to prevent memory issues
   if (availabilityCache.size > 100) {
     const firstKey = availabilityCache.keys().next().value;
-    availabilityCache.delete(firstKey);
+    if (firstKey !== undefined) {
+      availabilityCache.delete(firstKey);
+    }
   }
   
   return result;
